@@ -1,0 +1,146 @@
+/* src/App.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f7fa;
+}
+
+.App {
+  width: 100%;
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+input, textarea, select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #007bff;
+}
+
+input[type="text"], textarea {
+  width: 100%;
+}
+
+textarea {
+  height: 100px;
+}
+
+button {
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+div {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  color: #333;
+}
+
+select {
+  width: 100%;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #ddd;
+  margin: 10px 0;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+li:hover {
+  background-color: #f0f0f0;
+}
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+}
+
+button.delete {
+  background-color: #ff6b6b;
+}
+
+button.delete:hover {
+  background-color: #e63946;
+}
+
+button.edit {
+  background-color: #f1c40f;
+}
+
+button.edit:hover {
+  background-color: #f39c12;
+}
+
+.task-title {
+  font-weight: bold;
+  color: #333;
+}
+
+.task-description {
+  color: #666;
+  font-size: 14px;
+}
+
+.task-status {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.task-status.pending {
+  background-color: #ffb600;
+  color: #fff;
+}
+
+.task-status.completed {
+  background-color: #2ecc71;
+  color: #fff;
+}

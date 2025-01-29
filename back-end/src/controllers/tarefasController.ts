@@ -67,8 +67,9 @@ export const deletarTarefa = async (req: Request, res: Response): Promise<void> 
         await prisma.tarefa.delete({
             where: { id: Number(id) },
         });
-        res.status(200).json({ message: 'Tarefa deletada com sucesso!' });
+        res.status(204).send(); // Código 204 indica sucesso, mas sem corpo
     } catch (error) {
         res.status(500).json({ message: 'Erro ao deletar tarefa', error });
     }
 };
+
