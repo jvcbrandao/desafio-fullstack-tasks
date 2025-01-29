@@ -1,13 +1,10 @@
+"use strict";
 // import { PrismaClient } from '@prisma/client'
-
 // const prisma = new PrismaClient();
-
 // // console.log("O que eu quero está na proxima linha");
 // // console.log(prisma.$connect());
 // // console.log("Está aqui em cima! ");
-
 // async function main() {
-  
 //   const newTask = await prisma.task.create({
 //     data: {
 //       title: 'Estudar Prisma',
@@ -16,7 +13,6 @@
 //   })
 //   console.log(newTask)
 // }
-
 // main()
 //   .catch(e => {
 //     throw e

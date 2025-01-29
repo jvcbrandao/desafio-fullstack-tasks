@@ -1,15 +1,18 @@
 {
-    "compilerOptions": {
-      "target": "ES6",
-      "module": "commonjs",
-      "esModuleInterop": true,
-      "strict": true,
-      "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true,
-      "outDir": "./dist"
-    },
-    "include": [
-      "src/**/*.ts"
-    ]
-  }
-  
+  "compilerOptions": {
+    "target": "ES6",                         // Compilar para ES6
+    "module": "commonjs",                    // Usar módulos CommonJS
+    "esModuleInterop": true,                 // Facilitar importações de módulos CommonJS
+    "strict": true,                          // Habilitar checagem estrita
+    "skipLibCheck": true,                    // Ignorar checagem das definições de tipo de bibliotecas
+    "forceConsistentCasingInFileNames": true, // Forçar o uso consistente de maiúsculas/minúsculas nos arquivos
+    "outDir": "./dist",                      // Compilar para a pasta 'dist'
+    "rootDir": "./src"                       // Garantir que o TypeScript saiba qual é o diretório raiz
+  },
+  "include": [
+    "src/**/*.ts"                            // Incluir todos os arquivos TypeScript da pasta src
+  ],
+  "exclude": [
+    "node_modules"                           // Excluir a pasta node_modules da compilação
+  ]
+}
