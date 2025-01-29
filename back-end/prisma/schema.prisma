@@ -1,0 +1,17 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") 
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tarefa {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?  // Opcional
+  status      String   @default("pendente") // "pendente" ou "concluída"
+  createdAt   DateTime @default(now())
+}
+
