@@ -1,4 +1,4 @@
-# Task Manager
+# Gerenciador de tarfas
 
 Este é um projeto de gerenciamento de tarefas desenvolvido com React no frontend e Node.js com Prisma no backend. O objetivo do projeto é permitir que os usuários criem, editem, visualizem e excluam tarefas.
 
@@ -14,7 +14,6 @@ Este é um projeto de gerenciamento de tarefas desenvolvido com React no fronten
 - Node.js
 - Express
 - Prisma ORM
-- SQLite (ou outro banco de dados compatível com Prisma)
 
 ## Funcionalidades
 
@@ -34,10 +33,6 @@ Este é um projeto de gerenciamento de tarefas desenvolvido com React no fronten
 1. Instale as dependências: `npm install`
 2. Inicie o frontend: `npm start`
 
-## Problemas Conhecidos
-
-- Ao tentar excluir uma tarefa inexistente, pode ocorrer o erro `P2025` do Prisma.
-- O frontend pode não atualizar automaticamente a lista após exclusão se a atualização do estado não for feita corretamente.
 
 ## Autor
 Desenvolvido por João Vitor Brandão.
