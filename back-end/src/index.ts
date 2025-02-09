@@ -16,10 +16,10 @@ async function main(): Promise<void> {
         allowedHeaders: ['Content-Type', 'Authorization'],  // Cabeçalhos permitidos
     }));
 
-    app.use(express.json()); // Middleware para parsear JSON
+    app.use(express.json()); // Middleware para parsear JSON - função que tem acesso a resposta
 
     // Usa as rotas de tarefas
-    app.use('/', tarefasRoutes); // Prefixa as rotas com '/' (ou o que preferir)
+    app.use('/', tarefasRoutes); // Prefixa as rotas com '/'
 
     // Inicia o servidor
     app.listen(process.env.PORT, (): void => {

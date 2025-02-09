@@ -11,6 +11,6 @@ router.get('/tarefas', listarTarefas);
 
 router.put('/tarefas/:id', atualizarTarefa);
 
-router.delete('/tarefas/:id', deletarTarefa); // Rota DELETE
+router.delete('/tarefas/:id', deletarTarefa);
 
 export default router;

@@ -6,6 +6,7 @@ import TaskList from './components/TaskList';
 import { Task } from './types/Task';
 
 const App: React.FC = () => {
+
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all');
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
@@ -16,42 +17,43 @@ const App: React.FC = () => {
   };
 
   const updateTask = (updatedTask: Task) => {
-    setTasks(tasks.map((task) =>
-      task.id === updatedTask.id ? updatedTask : task
-    ));
+    setTasks(tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)));
+    setEditingTask(undefined); // Limpa o estado de edição após a atualização
   };
+  
+  
+  
 
   const deleteTask = async (id: number) => {
     try {
-      // Envia a requisição para excluir no backend
       const resposta = await axios.delete(`http://localhost:8080/tarefas/${id}`);
       
-      // Verifica se o status de resposta é 204 ou 200, indicando sucesso
-      if (resposta.status === 204 || resposta.status === 200) {
-        // Remove a tarefa do estado, ou seja, da tela
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+      // Verifica status de sucesso (normalmente 200 OK ou 204 No Content)
+      if (resposta.status === 200 || resposta.status === 204) {
+        alert("Tarefa excluída com sucesso!"); // Substitua "OI" por mensagem relevante
+        
       } else {
-        alert('Erro ao excluir a tarefa no backend.');
+        alert(`Erro inesperado: ${resposta.status}`);
       }
+      
     } catch (error) {
       console.error('Erro ao excluir tarefa:', error);
-      alert('Tarefa excluída com sucesso!');
+    }
+    finally{
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
     }
   };
   
   
-  
-  
-
   const editTask = (task: Task) => {
     setEditingTask(task);
   };
+
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilter(e.target.value as 'all' | 'pending' | 'completed');
   };
 
-  // Função para listar tarefas do backend
   const listTasks = async () => {
     setLoading(true);
     try {
@@ -72,6 +74,8 @@ const App: React.FC = () => {
     }
   };
 
+
+
   return (
     <div className="App">
       <h1>Gerenciador de tarefas</h1>
@@ -83,7 +87,7 @@ const App: React.FC = () => {
         <select value={filter} onChange={handleFilterChange}>
           <option value="all">Todas</option>
           <option value="pending">Pendentes</option>
-          <option value="completed">Completed</option>
+          <option value="completed">Completas</option>
         </select>
       </div>
 
@@ -95,5 +99,8 @@ const App: React.FC = () => {
     </div>
   );
 };
+
+
+
 
 export default App;

@@ -44,4 +44,3 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onDelete, onEdit, filter }) 
 };
 
 export default TaskList;
-

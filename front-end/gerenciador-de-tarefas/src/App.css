@@ -1,30 +1,37 @@
-/* src/App.css */
+/*Estilos*/
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f4f7fa;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .App {
-  width: 100%;
-  max-width: 800px;
-  margin: 50px auto;
-  padding: 20px;
+  width: 80vw; /* Ocupa 80% da largura da viewport */
+  max-width: none;
+  margin: 20px;
+  padding: 40px;
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box; /* Garante que padding não ultrapasse os 80% */
 }
 
 h1 {
   text-align: center;
   color: #333;
+  font-size: 2.5em;
+  margin-bottom: 30px;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 25px; /* Aumentado de 20px para melhor distribuição */
   margin-bottom: 20px;
 }
 
@@ -35,6 +42,7 @@ input, textarea, select {
   border-radius: 4px;
   outline: none;
   transition: border-color 0.3s;
+  box-sizing: border-box;
 }
 
 input:focus, textarea:focus, select:focus {
@@ -46,7 +54,8 @@ input[type="text"], textarea {
 }
 
 textarea {
-  height: 100px;
+  height: 150px;
+  min-width: 100%;
 }
 
 button {
@@ -83,14 +92,11 @@ ul {
 }
 
 li {
+  padding: 15px 25px; /* Mais espaço horizontal (de 20px para 25px) */
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px;
-  border: 1px solid #ddd;
-  margin: 10px 0;
-  border-radius: 4px;
-  background-color: #fafafa;
+  justify-content: space-between;
+  gap: 20px; /* Aumentado de 15px para melhor espaçamento */
 }
 
 li:hover {
@@ -131,7 +137,7 @@ button.edit:hover {
 .task-status {
   font-size: 14px;
   font-weight: bold;
-  padding: 4px 8px;
+  padding: 6px 12px; /* Aumentado de 4px 8px para melhor visibilidade */
   border-radius: 4px;
 }
 
