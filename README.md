@@ -1,4 +1,4 @@
-# Gerenciador de tarfas
+# Gerenciador de tarefas
 
 Este é um projeto de gerenciamento de tarefas desenvolvido com React no frontend e Node.js com Prisma no backend. O objetivo do projeto é permitir que os usuários criem, editem, visualizem e excluam tarefas.
 
