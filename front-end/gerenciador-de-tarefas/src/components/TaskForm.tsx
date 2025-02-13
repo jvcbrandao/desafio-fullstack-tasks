@@ -7,13 +7,12 @@ interface TaskFormProps {
   initialTask?: Task;
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({ initialTask }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ onSubmit, initialTask }) => { // Adicionei a prop onSubmit
   const [title, setTitle] = useState(initialTask?.title || '');
   const [description, setDescription] = useState(initialTask?.description || '');
   const [status, setStatus] = useState<'pending' | 'completed'>(initialTask?.status || 'pending');
   const [loading, setLoading] = useState(false);
 
-  // Atualiza os campos quando recebe uma tarefa para edição
   useEffect(() => {
     if (initialTask) {
       setTitle(initialTask.title);
@@ -26,32 +25,37 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialTask }) => {
     e.preventDefault();
 
     const taskData = {
-      titulo: title,
-      descricao: description,
+      title,
+      description, 
       status,
     };
 
     setLoading(true);
 
     try {
+      let response;
       if (initialTask) {
-        // Atualiza tarefa existente
-        await axios.put(`http://localhost:8080/tarefas/${initialTask.id}`, taskData);
+        response = await axios.put(`http://localhost:8080/tarefas/${initialTask.id}`, taskData);
       } else {
-        // Cria nova tarefa
-        await axios.post('http://localhost:8080/tarefas', taskData);
+        response = await axios.post('http://localhost:8080/tarefas', taskData);
       }
 
-      // Reseta o formulário após sucesso
+      onSubmit(response.data);
+
+      if (!initialTask) {
+        setTitle('');
+        setDescription('');
+        setStatus('pending');
+      }
+
+    } catch (error) {
+      console.error('Erro detalhado:', error);
+      alert('Erro ao salvar! Verifique o console.');
+    } finally {
+      setLoading(false);
       setTitle('');
       setDescription('');
       setStatus('pending');
-
-    } catch (error) {
-      console.error('Erro ao salvar a tarefa:', error);
-      alert('Erro ao salvar a tarefa. Tente novamente!');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -93,11 +97,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ initialTask }) => {
         disabled={loading}
         className="save-button"
       >
-        {loading ?
-          <span>Salvando...</span>
-       :
-          <span>Salvar</span>
-        }
+        {loading ? 'Salvando...' : 'Salvar'}
       </button>
     </form>
   );

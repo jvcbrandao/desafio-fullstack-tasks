@@ -1,25 +1,30 @@
 import { Request, Response } from 'express';
-import { prisma } from '../lib/prisma'; 
+import { prisma } from '../lib/prisma';
+import { Prisma } from '@prisma/client'; // Importação necessária para tratamento de erros
 
 export const criarTarefa = async (req: Request, res: Response): Promise<void> => {
-    const { titulo, descricao, status } = req.body;
+    const { title, description, status } = req.body; // Campos em inglês
 
     try {
-        // Inserir a tarefa no banco de dados
+        // Validação dos campos obrigatórios
+        if (!title || !status) {
+            res.status(400).json({ erro: 'Campos obrigatórios faltando' });
+            return;
+        }
+
         const tarefa = await prisma.tarefa.create({
             data: {
-                title: titulo,          // Mapeando 'titulo' para 'title'
-                description: descricao, // Mapeando 'descricao' para 'description'
+                title,          // Usa diretamente os campos em inglês
+                description,
                 status,
             },
         });
 
-        res.status(201).json(tarefa); // Retorna a tarefa criada
+        res.status(201).json(tarefa);
     } catch (error) {
         res.status(500).json({ message: 'Erro ao criar tarefa', error });
     }
 };
-
 
 export const listarTarefas = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -36,38 +41,35 @@ export const deletarTarefa = async (req: Request, res: Response): Promise<void> 
         await prisma.tarefa.delete({
             where: { id: Number(id) },
         });
-        res.status(204).send(); // Código 204 indica sucesso, mas sem corpo
+        res.status(204).send();
     } catch (error) {
-        res.status(500).json({ message: 'Erro ao deletar tarefa', error });
+        if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+            res.status(404).json({ erro: 'Tarefa não encontrada' });
+        } else {
+            res.status(500).json({ message: 'Erro ao deletar tarefa', error });
+        }
     }
 };
 
-
 export const atualizarTarefa = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
-    const { titulo, descricao, status } = req.body;
-
+    const { title, description, status } = req.body;
     try {
-        // Validação mínima
-        if (!titulo || !status) {
-            res.status(400).json({ erro: 'Campos obrigatórios faltando' });
-            return;
-        }
-
-        // Atualização com mapeamento correto
         const tarefaAtualizada = await prisma.tarefa.update({
             where: { id: Number(id) },
-            data: {
-                title: titulo,       // Mapeia "titulo" (front) → "title" (BD)
-                description: descricao, // Mapeia "descricao" → "description"
-                status  
-            },
+            data: { title, description, status },
         });
-
         res.status(200).json(tarefaAtualizada);
 
-    } 
-    catch(error){
-        console.log(error);
+    } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if (error.code === 'P2025') {
+                res.status(404).json({ erro: 'Tarefa não encontrada' });
+            } else {
+                res.status(500).json({ message: 'Erro do Prisma', error });
+            }
+        } else {
+            res.status(500).json({ message: 'Erro interno', error });
+        }
     }
 };

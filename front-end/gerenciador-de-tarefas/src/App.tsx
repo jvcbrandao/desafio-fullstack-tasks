@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Adicionei o useEffect
 import axios from 'axios';
 import './App.css';
 import TaskForm from './components/TaskForm';
@@ -6,48 +6,41 @@ import TaskList from './components/TaskList';
 import { Task } from './types/Task';
 
 const App: React.FC = () => {
-
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all');
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const addTask = (task: Task) => {
-    setTasks([...tasks, task]);
-  };
+  useEffect(() => {
+    listTasks();
+  }, []);
 
-  const updateTask = (updatedTask: Task) => {
-    setTasks(tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)));
-    setEditingTask(undefined); // Limpa o estado de edição após a atualização
-  };
-  
-  
-  
 
-  const deleteTask = async (id: number) => {
-    try {
-      const resposta = await axios.delete(`http://localhost:8080/tarefas/${id}`);
-      
-      // Verifica status de sucesso (normalmente 200 OK ou 204 No Content)
-      if (resposta.status === 200 || resposta.status === 204) {
-        alert("Tarefa excluída com sucesso!"); // Substitua "OI" por mensagem relevante
-        
-      } else {
-        alert(`Erro inesperado: ${resposta.status}`);
-      }
-      
-    } catch (error) {
-      console.error('Erro ao excluir tarefa:', error);
-    }
-    finally{
-      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    }
-  };
-  
-  
   const editTask = (task: Task) => {
     setEditingTask(task);
   };
+
+  const handleTaskSubmit = (task: Task) => {
+    if (editingTask) {
+      setTasks(prev => prev.map(t => t.id === task.id ? task : t));
+    } else {
+      setTasks(prev => [...prev, task]);
+    }
+    setEditingTask(undefined);
+  };
+
+  const deleteTask = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:8080/tarefas/${id}`);
+      
+    } catch (error) {
+      console.error('Erro ao excluir:', error);
+    }
+    finally{
+      setTasks(prev => prev.filter(task => task.id !== id));
+    }
+  };
+
 
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -58,15 +51,7 @@ const App: React.FC = () => {
     setLoading(true);
     try {
       const response = await axios.get('http://localhost:8080/tarefas');
-
-      const tasksData: Task[] = response.data.map((task: any) => ({
-        id: task.id,
-        title: task.title,
-        description: task.description,
-        status: task.status as 'pending' | 'completed', // Garantindo o tipo correto
-        createdAt: task.createdAt
-      }));
-      setTasks(tasksData); // Atualiza as tarefas no estado
+      setTasks(response.data);
     } catch (error) {
       console.error('Erro ao buscar tarefas:', error);
     } finally {
@@ -74,16 +59,17 @@ const App: React.FC = () => {
     }
   };
 
-
-
   return (
     <div className="App">
       <h1>Gerenciador de tarefas</h1>
       
-      <TaskForm onSubmit={editingTask ? updateTask : addTask} initialTask={editingTask ?? undefined} />
+      <TaskForm 
+        onSubmit={handleTaskSubmit} 
+        initialTask={editingTask}
+      />
       
-      <div>
-        <label>Filtro de tarefas</label>
+      <div className="filter-section">
+        <label>Filtro: </label>
         <select value={filter} onChange={handleFilterChange}>
           <option value="all">Todas</option>
           <option value="pending">Pendentes</option>
@@ -91,16 +77,22 @@ const App: React.FC = () => {
         </select>
       </div>
 
-      <button onClick={listTasks} disabled={loading}>
-        {loading ? 'Carregando...' : 'Listar Tarefas'}
+      <button 
+        onClick={listTasks} 
+        disabled={loading}
+        className="refresh-button"
+      >
+        {loading ? 'Carregando...' : 'Atualizar Lista'}
       </button>
 
-      <TaskList tasks={tasks} onDelete={deleteTask} onEdit={editTask} filter={filter} />
+          <TaskList 
+          tasks={tasks} 
+          onDelete={deleteTask} 
+          onEdit={editTask} 
+          filter={filter}
+          />
     </div>
   );
 };
-
-
-
 
 export default App;
